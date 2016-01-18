@@ -26,11 +26,10 @@ Partial Class Form1
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
-        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
-        Me.file_version_lbl = New System.Windows.Forms.ToolStripStatusLabel()
         Me.btn_carica = New System.Windows.Forms.Button()
-        Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
-        Me.StatusStrip1.SuspendLayout()
+        Me.TextBox2 = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Button2 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Button1
@@ -62,54 +61,57 @@ Partial Class Form1
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
         '
-        'StatusStrip1
-        '
-        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.file_version_lbl})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 426)
-        Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(386, 22)
-        Me.StatusStrip1.TabIndex = 3
-        Me.StatusStrip1.Text = "StatusStrip1"
-        '
-        'file_version_lbl
-        '
-        Me.file_version_lbl.Name = "file_version_lbl"
-        Me.file_version_lbl.Size = New System.Drawing.Size(75, 17)
-        Me.file_version_lbl.Text = "Versione File:"
-        '
         'btn_carica
         '
         Me.btn_carica.Enabled = False
-        Me.btn_carica.Location = New System.Drawing.Point(299, 25)
+        Me.btn_carica.Location = New System.Drawing.Point(303, 68)
         Me.btn_carica.Name = "btn_carica"
         Me.btn_carica.Size = New System.Drawing.Size(75, 23)
         Me.btn_carica.TabIndex = 0
-        Me.btn_carica.Text = "Carica"
+        Me.btn_carica.Text = "Avanti"
         Me.btn_carica.UseVisualStyleBackColor = True
         '
-        'WebBrowser1
+        'TextBox2
         '
-        Me.WebBrowser1.Location = New System.Drawing.Point(12, 54)
-        Me.WebBrowser1.MinimumSize = New System.Drawing.Size(20, 20)
-        Me.WebBrowser1.Name = "WebBrowser1"
-        Me.WebBrowser1.Size = New System.Drawing.Size(362, 369)
-        Me.WebBrowser1.TabIndex = 4
+        Me.TextBox2.Location = New System.Drawing.Point(12, 70)
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.Size = New System.Drawing.Size(200, 20)
+        Me.TextBox2.TabIndex = 2
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(12, 54)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(89, 13)
+        Me.Label2.TabIndex = 1
+        Me.Label2.Text = "Percorso file CSV"
+        '
+        'Button2
+        '
+        Me.Button2.Location = New System.Drawing.Point(218, 68)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(75, 23)
+        Me.Button2.TabIndex = 0
+        Me.Button2.Text = "Sfoglia"
+        Me.Button2.UseVisualStyleBackColor = True
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(386, 448)
-        Me.Controls.Add(Me.WebBrowser1)
-        Me.Controls.Add(Me.StatusStrip1)
+        Me.ClientSize = New System.Drawing.Size(390, 102)
+        Me.Controls.Add(Me.TextBox2)
         Me.Controls.Add(Me.TextBox1)
+        Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.btn_carica)
+        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.MaximizeBox = False
         Me.Name = "Form1"
-        Me.Text = "Form1"
-        Me.StatusStrip1.ResumeLayout(False)
-        Me.StatusStrip1.PerformLayout()
+        Me.Text = "Sim reporter"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -119,8 +121,8 @@ Partial Class Form1
     Friend WithEvents Label1 As Label
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
-    Friend WithEvents StatusStrip1 As StatusStrip
     Friend WithEvents btn_carica As Button
-    Friend WithEvents file_version_lbl As ToolStripStatusLabel
-    Friend WithEvents WebBrowser1 As WebBrowser
+    Friend WithEvents TextBox2 As TextBox
+    Friend WithEvents Label2 As Label
+    Friend WithEvents Button2 As Button
 End Class

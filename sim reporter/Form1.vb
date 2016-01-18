@@ -1,31 +1,21 @@
 ﻿Public Class Form1
 
-    Dim SNM() As String
-    Dim groups() As String
-    Dim categories() As String
-    Dim EmL() As String
-    Dim numeri_servizio As New List(Of registro) 'numeri servizio
-    Dim avaiable_carriers As New List(Of carrier) 'operatori disponibile
-    Dim forbidden_carriers As New List(Of carrier) 'operatori vietati
-    Dim sms_flags As New List(Of String) 'SMS Flags
-    Dim messaggi As New List(Of Messaggio) 'messaggi
-    Dim numeri_fissi As New List(Of registro) 'numeri fissi
-    Dim ultime_chiamate As New List(Of registro) 'ultime chiamate
-    Dim numeri_personali As New List(Of registro) 'numeri personali
-    Dim contacts As New List(Of Contatto) 'contatti
-    Dim memory_index As New Dictionary(Of String, Integer)
-    Dim memory_count As New Dictionary(Of String, Integer)
-    Dim righe_file As New List(Of String)
-    Dim version_file As String()
-    Dim pretty_info As info
-    Dim backup_righe_file As New List(Of String)
-
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         OpenFileDialog1.Filter = "Dekart phonebook file|*.phn"
         OpenFileDialog1.FileName = ""
         If OpenFileDialog1.ShowDialog = DialogResult.OK Then
             Dim file As String = OpenFileDialog1.FileName
             TextBox1.Text = file
+            'btn_carica.Enabled = True
+        End If
+    End Sub
+
+    Private Sub Button2_Click_1(sender As Object, e As EventArgs) Handles Button2.Click
+        OpenFileDialog1.Filter = "Comma separeted file|*.csv"
+        OpenFileDialog1.FileName = ""
+        If OpenFileDialog1.ShowDialog = DialogResult.OK Then
+            Dim file As String = OpenFileDialog1.FileName
+            TextBox2.Text = file
             btn_carica.Enabled = True
         End If
     End Sub
@@ -50,6 +40,14 @@
             loading_old()
         End If
 
+        Dim info_righe() As String = IO.File.ReadAllLines(TextBox2.Text)
+        Dim riga As String()
+        For Each r As String In info_righe
+            riga = r.Split(",")
+            For i = 1 To riga.Length - 1 Step 2
+                info_CSV.Add(Tuple.Create(riga(i - 1), riga(i)))
+            Next
+        Next
         'parsing
 
         For y = 0 To groups.Length - 1
@@ -65,14 +63,17 @@
             categories(y) = categories(y).Substring(categories(y).IndexOf("=") + 1)
         Next
 
-        generahtml()
+        For Each mes As Messaggio In messaggi
+            Dim temp As ULong
+            If mes.d <> 0 Then
+                temp = mes.d \ 10000000 - 11644473600
+                mes.time = DateAdd(DateInterval.Second, temp, mes.time)
+            End If
+        Next
 
-        file_version_lbl.Text += " " & version_file(0).Substring(version_file(0).Length - 2)
-    End Sub
+        Form2.Show()
+        Close()
 
-    Private Sub generahtml()
-        Dim header As String = "<head><style>table, th, td { border: 1px solid black; padding: 5px; } table { border-collapse: collapse; }</style></head>"
-        WebBrowser1.DocumentText = header
     End Sub
 
     Sub mapping()
@@ -232,4 +233,6 @@
         lungh \= ParameterSize
         Return lungh
     End Function
+
+
 End Class
