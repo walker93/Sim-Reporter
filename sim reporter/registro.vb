@@ -7,4 +7,17 @@
         Me.n = n
         Me.t = t
     End Sub
+
+    Public Shared Operator =(reg1 As registro, reg2 As registro) As Boolean
+        If reg1.n <> reg2.n Then Return False
+        If reg1.t <> reg2.t Then Return False
+        Return True
+
+    End Operator
+
+    Public Shared Operator <>(reg1 As registro, reg2 As registro) As Boolean
+        If reg1.n <> reg2.n Then Return True
+        If reg1.t <> reg2.t Then Return True
+        Return False
+    End Operator
 End Class

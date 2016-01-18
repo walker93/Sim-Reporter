@@ -20,12 +20,18 @@
         End If
     End Sub
 
+    Function isempty(str As String) As Boolean
+        If str = "" Then Return True
+        Return False
+    End Function
+
+
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles btn_carica.Click
 
         righe_file.AddRange(IO.File.ReadAllLines(TextBox1.Text))
         backup_righe_file.AddRange(righe_file)
         'righe_file.RemoveRange(4018, 7202)
-
+        righe_file.RemoveAll(New Predicate(Of String)(AddressOf isempty))
         'mapping
 
         mapping()
@@ -207,12 +213,12 @@
         Next
         righe_file.RemoveAt(0)
 
-        For i = 1 To getLenght("[OPLMN]", 2) 'operatori consentiti
-            Dim temp() As String = righe_file.Take(2).ToArray
+        For i = 1 To getLenght("[OPLMN]", 3) 'operatori consentiti
+            Dim temp() As String = righe_file.Take(3).ToArray
             For y = 0 To 1
                 temp(y) = temp(y).Substring(temp(y).IndexOf("=") + 1)
             Next
-            righe_file.RemoveRange(0, 2)
+            righe_file.RemoveRange(0, 3)
             Dim reg As New carrier(temp(0), temp(1))
             avaiable_carriers.Add(reg)
         Next

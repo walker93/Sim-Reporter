@@ -9,4 +9,17 @@
         Me.mnc = mnc
         Me.access = access
     End Sub
+
+    Public Shared Operator =(op1 As carrier, op2 As carrier) As Boolean
+        If op1.mcc <> op2.mcc Then Return False
+        If op1.mnc <> op2.mnc Then Return False
+        Return True
+
+    End Operator
+
+    Public Shared Operator <>(op1 As carrier, op2 As carrier) As Boolean
+        If op1.mcc <> op2.mcc Then Return True
+        If op1.mnc <> op2.mnc Then Return True
+        Return False
+    End Operator
 End Class
