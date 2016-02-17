@@ -9,7 +9,11 @@ Public Class Form3
         doc = web.Document
         fill_riepilogo()
         fill_SimInfo()
-        fill_rubrica()
+        If is_old Then
+            fill_rubrica_old()
+        Else
+            fill_rubrica()
+        End If
         fill_messaggi()
         fill_personali()
         fill_ultime()
@@ -35,7 +39,31 @@ Public Class Form3
         doc.GetElementById("fornitore").InnerText = info_CSV(1).Item2
     End Sub
 
+    Sub fill_rubrica_old()
+        Dim del_rubrica As HtmlElement = doc.GetElementById("rubrica")
+        del_rubrica.Style = "Display: none;"
+        Dim rubrica As HtmlElement = doc.GetElementById("rubrica_old")
+        For i = 0 To contacts_old.Count - 1 'numero di righe (in questo caso contatti)
+            If contacts_old(i) = (New registro()) Then Continue For
+            Dim riga_element As HtmlElement = doc.CreateElement("tr")
+            For j = 0 To registro.ParameterSize - 1 'numero di paramentri
+                Dim td As HtmlElement = doc.CreateElement("td")
+                td.Name = rubrica_n(j)
+                Select Case j
+                    Case 0
+                        td.InnerText = contacts_old(i).n
+                    Case 1
+                        td.InnerText = contacts_old(i).t
+                End Select
+                riga_element.AppendChild(td)
+            Next
+            rubrica.FirstChild.AppendChild(riga_element)
+        Next
+    End Sub
+
     Sub fill_rubrica()
+        Dim del_rubrica As HtmlElement = doc.GetElementById("rubrica_old")
+        del_rubrica.Style = "Display: none;"
         Dim rubrica As HtmlElement = doc.GetElementById("rubrica")
         For i = 0 To contacts.Count - 1 'numero di righe (in questo caso contatti)
             If contacts(i) = (New Contatto()) Then Continue For

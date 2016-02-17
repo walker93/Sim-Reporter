@@ -60,6 +60,7 @@ Partial Class Form1
         'OpenFileDialog1
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        Me.OpenFileDialog1.RestoreDirectory = True
         '
         'btn_carica
         '

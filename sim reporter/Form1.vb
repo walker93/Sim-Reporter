@@ -40,10 +40,11 @@
 
         version_file = righe_file.Take(1).ToArray
         righe_file.RemoveRange(0, 2)
-        If righe_file.Contains("3g=1") Then
-            loading()
-        Else
+        is_old = Not righe_file.Contains("3g=1")
+        If is_old Then
             loading_old()
+        Else
+            loading()
         End If
 
         Dim info_righe() As String = IO.File.ReadAllLines(TextBox2.Text)
@@ -55,20 +56,20 @@
             Next
         Next
         'parsing
-
-        For y = 0 To groups.Length - 1
-            groups(y) = groups(y).Substring(groups(y).IndexOf("=") + 1)
-        Next
-        For y = 0 To SNM.Length - 1
-            SNM(y) = SNM(y).Substring(SNM(y).IndexOf("=") + 1)
-        Next
-        For y = 0 To EmL.Length - 1
-            EmL(y) = EmL(y).Substring(EmL(y).IndexOf("=") + 1)
-        Next
-        For y = 0 To categories.Length - 1
-            categories(y) = categories(y).Substring(categories(y).IndexOf("=") + 1)
-        Next
-
+        If Not is_old Then
+            For y = 0 To groups.Length - 1
+                groups(y) = groups(y).Substring(groups(y).IndexOf("=") + 1)
+            Next
+            For y = 0 To SNM.Length - 1
+                SNM(y) = SNM(y).Substring(SNM(y).IndexOf("=") + 1)
+            Next
+            For y = 0 To EmL.Length - 1
+                EmL(y) = EmL(y).Substring(EmL(y).IndexOf("=") + 1)
+            Next
+            For y = 0 To categories.Length - 1
+                categories(y) = categories(y).Substring(categories(y).IndexOf("=") + 1)
+            Next
+        End If
         For Each mes As Messaggio In messaggi
             Dim temp As ULong
             If mes.d <> 0 Then
@@ -227,8 +228,91 @@
     End Sub
 
     Sub loading_old()
+        For i = 1 To getLenght("[0007]", registro.ParameterSize) 'Contatti
+            Dim temp() As String = righe_file.Take(registro.ParameterSize).ToArray
+            For y = 0 To registro.ParameterSize - 1
+                temp(y) = temp(y).Substring(temp(y).IndexOf("=") + 1)
+            Next
+            righe_file.RemoveRange(0, registro.ParameterSize)
+            Dim contact As New registro(temp(0), temp(1))
+            contacts_old.Add(contact)
+        Next
+        righe_file.RemoveAt(0)
 
+        For i = 1 To getLenght("[0006]", registro.ParameterSize) 'Numeri personali
+            Dim temp() As String = righe_file.Take(registro.ParameterSize).ToArray
+            For y = 0 To registro.ParameterSize - 1
+                temp(y) = temp(y).Substring(temp(y).IndexOf("=") + 1)
+            Next
+            righe_file.RemoveRange(0, registro.ParameterSize)
+            Dim reg As New registro(temp(0), temp(1))
+            numeri_personali.Add(reg)
+        Next
+        righe_file.RemoveAt(0)
 
+        For i = 1 To getLenght("[0005]", registro.ParameterSize) 'Chiamate recenti
+            Dim temp() As String = righe_file.Take(registro.ParameterSize).ToArray
+            For y = 0 To registro.ParameterSize - 1
+                temp(y) = temp(y).Substring(temp(y).IndexOf("=") + 1)
+            Next
+            righe_file.RemoveRange(0, registro.ParameterSize)
+            Dim reg As New registro(temp(0), temp(1))
+            ultime_chiamate.Add(reg)
+        Next
+        righe_file.RemoveAt(0)
+
+        For i = 1 To getLenght("[6F3C]", registro.ParameterSize) 'numeri Fissi
+            Dim temp() As String = righe_file.Take(2).ToArray
+            For y = 0 To 1
+                temp(y) = temp(y).Substring(temp(y).IndexOf("=") + 1)
+            Next
+            righe_file.RemoveRange(0, 2)
+            Dim reg As New registro(temp(0), temp(1))
+            numeri_fissi.Add(reg)
+        Next
+        righe_file.RemoveAt(0)
+
+        For i = 1 To getLenght("[SMSFlags]", Messaggio.ParameterSize) 'messaggi
+            Dim temp() As String = righe_file.Take(Messaggio.ParameterSize).ToArray
+            For y = 0 To Messaggio.ParameterSize - 1
+                temp(y) = temp(y).Substring(temp(y).IndexOf("=") + 1)
+            Next
+            righe_file.RemoveRange(0, Messaggio.ParameterSize)
+            Dim reg As New Messaggio(temp(0), temp(1), temp(2), temp(3))
+            messaggi.Add(reg)
+        Next
+        righe_file.RemoveAt(0)
+
+        For i = 1 To getLenght("[FPLMN]", 1) 'flags
+            Dim temp As String = righe_file.Take(1).ToArray(0)
+            temp = temp.Substring(temp.IndexOf("=") + 1)
+            righe_file.RemoveRange(0, 1)
+            'Dim reg As New Messaggio(temp(0))
+            sms_flags.Add(temp)
+        Next
+        righe_file.RemoveAt(0)
+
+        For i = 1 To getLenght("[PLMN]", 2) 'operatori vietati
+            Dim temp() As String = righe_file.Take(2).ToArray
+            For y = 0 To 1
+                temp(y) = temp(y).Substring(temp(y).IndexOf("=") + 1)
+            Next
+            righe_file.RemoveRange(0, 2)
+            Dim reg As New carrier(temp(0), temp(1))
+            forbidden_carriers.Add(reg)
+        Next
+        righe_file.RemoveAt(0)
+
+        For i = 1 To getLenght("[OPLMN]", 3) 'operatori consentiti
+            Dim temp() As String = righe_file.Take(3).ToArray
+            For y = 0 To 1
+                temp(y) = temp(y).Substring(temp(y).IndexOf("=") + 1)
+            Next
+            righe_file.RemoveRange(0, 3)
+            Dim reg As New carrier(temp(0), temp(1))
+            avaiable_carriers.Add(reg)
+        Next
+        righe_file.RemoveAt(0)
     End Sub
 
     Function getLenght(ByVal Memory_key As String, ByVal ParameterSize As Integer) As Integer
